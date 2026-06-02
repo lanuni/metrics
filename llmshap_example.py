@@ -1,3 +1,6 @@
+#Remember to install 'pip install llmshap'
+
+
 from llmSHAP import DataHandler, BasicPromptCodec, ShapleyAttribution
 from llmSHAP.llm import OpenAIInterface
 

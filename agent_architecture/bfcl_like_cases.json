@@ -1,0 +1,468 @@
+[
+  {
+    "id": "simple_001",
+    "category": "simple",
+    "user_query": "Resetea la contraseña del usuario maria.sosa por sms, es urgente",
+    "expected_calls": [
+      {
+        "it_support.reset_password": {
+          "username": ["maria.sosa"],
+          "channel": ["sms"],
+          "urgent": [true]
+        }
+      }
+    ]
+  },
+  {
+    "id": "simple_002",
+    "category": "simple",
+    "user_query": "Necesito el estado del ticket inc-1203",
+    "expected_calls": [
+      {
+        "it_support.check_ticket_status": {
+          "ticket_id": ["INC-1203"]
+        }
+      }
+    ]
+  },
+  {
+    "id": "simple_003",
+    "category": "simple",
+    "user_query": "Quiero abrir un incidente critica para correo en produccion, hay caida total",
+    "expected_calls": [
+      {
+        "it_support.create_incident": {
+          "service": ["email"],
+          "severity": ["critical"],
+          "description": ["<freeform>"],
+          "environment": ["production", ""]
+        }
+      }
+    ]
+  },
+  {
+    "id": "simple_004",
+    "category": "simple",
+    "user_query": "Dime el estado del servicio vpn en us-east",
+    "expected_calls": [
+      {
+        "it_support.get_service_status": {
+          "service": ["vpn"],
+          "region": ["us-east", ""]
+        }
+      }
+    ]
+  },
+  {
+    "id": "simple_005",
+    "category": "simple",
+    "user_query": "Busca una guia KB para configurar MFA en vpn",
+    "expected_calls": [
+      {
+        "it_support.search_kb_article": {
+          "topic": ["mfa enrollment"],
+          "product": ["vpn", ""]
+        }
+      }
+    ]
+  },
+  {
+    "id": "simple_006",
+    "category": "simple",
+    "user_query": "Programa mantenimiento de sap el 2026-06-10 22:00 por 90 min",
+    "expected_calls": [
+      {
+        "it_support.schedule_maintenance": {
+          "service": ["sap"],
+          "start_time": ["2026-06-10 22:00"],
+          "duration_minutes": [90],
+          "reason": ["<freeform>"]
+        }
+      }
+    ]
+  },
+  {
+    "id": "parallel_001",
+    "category": "parallel",
+    "user_query": "Revisa ticket inc-7788 y ademas estado del servicio correo",
+    "expected_calls": [
+      {
+        "it_support.check_ticket_status": {
+          "ticket_id": ["INC-7788"]
+        }
+      },
+      {
+        "it_support.get_service_status": {
+          "service": ["email"],
+          "region": ["global", ""]
+        }
+      }
+    ]
+  },
+  {
+    "id": "parallel_002",
+    "category": "parallel",
+    "user_query": "Resetea la contraseña del usuario ana.lopez y desbloquea la cuenta, despues revisa ticket inc-5512",
+    "expected_calls": [
+      {
+        "it_support.reset_password": {
+          "username": ["ana.lopez"],
+          "channel": ["email", ""],
+          "urgent": [false, ""]
+        }
+      },
+      {
+        "it_support.unlock_account": {
+          "username": ["ana.lopez"],
+          "system": ["identity", ""]
+        }
+      },
+      {
+        "it_support.check_ticket_status": {
+          "ticket_id": ["INC-5512"]
+        }
+      }
+    ]
+  },
+  {
+    "id": "parallel_003",
+    "category": "parallel",
+    "user_query": "Consulta el ticket inc-9001 y escalalo al equipo de correo con prioridad alta",
+    "expected_calls": [
+      {
+        "it_support.check_ticket_status": {
+          "ticket_id": ["INC-9001"]
+        }
+      },
+      {
+        "it_support.escalate_ticket": {
+          "ticket_id": ["INC-9001"],
+          "assignment_group": ["messaging_ops"],
+          "priority": ["p2"]
+        }
+      }
+    ]
+  },
+  {
+    "id": "parallel_004",
+    "category": "parallel",
+    "user_query": "Abre un incidente alta para jira en qa porque esta caido y revisa el estado del servicio jira",
+    "expected_calls": [
+      {
+        "it_support.create_incident": {
+          "service": ["jira"],
+          "severity": ["high"],
+          "description": ["<freeform>"],
+          "environment": ["qa", ""]
+        }
+      },
+      {
+        "it_support.get_service_status": {
+          "service": ["jira"],
+          "region": ["global", ""]
+        }
+      }
+    ]
+  },
+  {
+    "id": "parallel_005",
+    "category": "parallel",
+    "user_query": "Busca una guia KB de sap y programa mantenimiento de sap el 2026-06-15 23:30 por 120 min",
+    "expected_calls": [
+      {
+        "it_support.search_kb_article": {
+          "topic": ["sap connectivity"],
+          "product": ["sap", ""]
+        }
+      },
+      {
+        "it_support.schedule_maintenance": {
+          "service": ["sap"],
+          "start_time": ["2026-06-15 23:30"],
+          "duration_minutes": [120],
+          "reason": ["<freeform>"]
+        }
+      }
+    ]
+  },
+  {
+    "id": "parallel_006",
+    "category": "parallel",
+    "user_query": "El usuario lucas.paz tiene la cuenta bloqueada, resetea su contraseña por whatsapp y desbloquealo",
+    "expected_calls": [
+      {
+        "it_support.reset_password": {
+          "username": ["lucas.paz"],
+          "channel": ["whatsapp"],
+          "urgent": [false, ""]
+        }
+      },
+      {
+        "it_support.unlock_account": {
+          "username": ["lucas.paz"],
+          "system": ["identity", ""]
+        }
+      }
+    ]
+  },
+  {
+    "id": "relevance_001",
+    "category": "relevance",
+    "user_query": "La vpn viene lentisima desde la mañana, podrias fijarte si esta todo bien?",
+    "expected_calls": [
+      {
+        "it_support.get_service_status": {
+          "service": ["vpn"],
+          "region": ["global", ""]
+        }
+      }
+    ]
+  },
+  {
+    "id": "relevance_002",
+    "category": "relevance",
+    "user_query": "Uf, creo que me volvi a olvidar la clave... soy pedro.ramirez",
+    "expected_calls": [
+      {
+        "it_support.reset_password": {
+          "username": ["pedro.ramirez"],
+          "channel": ["email", ""],
+          "urgent": [false, ""]
+        }
+      }
+    ]
+  },
+  {
+    "id": "relevance_003",
+    "category": "relevance",
+    "user_query": "Che, el inc-3321 sigue sin novedades, en que quedo?",
+    "expected_calls": [
+      {
+        "it_support.check_ticket_status": {
+          "ticket_id": ["INC-3321"]
+        }
+      }
+    ]
+  },
+  {
+    "id": "relevance_004",
+    "category": "relevance",
+    "user_query": "Me vendria bien algo de info sobre como dejar configurada la vpn",
+    "expected_calls": [
+      {
+        "it_support.search_kb_article": {
+          "topic": ["vpn setup"],
+          "product": ["vpn", ""]
+        }
+      }
+    ]
+  },
+  {
+    "id": "irrelevance_001",
+    "category": "irrelevance",
+    "user_query": "Hola, buenos dias, como estas?",
+    "expected_calls": []
+  },
+  {
+    "id": "irrelevance_002",
+    "category": "irrelevance",
+    "user_query": "Cuentame un chiste corto sobre contraseñas en la oficina",
+    "expected_calls": []
+  },
+  {
+    "id": "irrelevance_003",
+    "category": "irrelevance",
+    "user_query": "Explicame en dos lineas que es una VPN",
+    "expected_calls": []
+  },
+  {
+    "id": "complex_001",
+    "category": "complex",
+    "user_query": "Dale acceso de admin y auditor a la usuaria sofia.diaz en sap por 30 dias, lo aprueba carlos.ruiz, es para una migracion",
+    "expected_calls": [
+      {
+        "it_support.provision_access": {
+          "username": ["sofia.diaz"],
+          "system": ["sap"],
+          "roles": [["admin", "auditor"]],
+          "duration_days": [30],
+          "justification": ["<freeform>"],
+          "approver": ["carlos.ruiz"]
+        }
+      }
+    ]
+  },
+  {
+    "id": "complex_002",
+    "category": "complex",
+    "user_query": "Crea el usuario para Juan Perez (juan.perez) en finanzas, arranca el 2026-07-01 y sumalo a los grupos vpn y email",
+    "expected_calls": [
+      {
+        "it_support.create_user": {
+          "full_name": ["Juan Perez"],
+          "username": ["juan.perez"],
+          "department": ["finance"],
+          "start_date": ["2026-07-01"],
+          "groups": [["vpn", "email"]]
+        }
+      }
+    ]
+  },
+  {
+    "id": "complex_003",
+    "category": "complex",
+    "user_query": "Pedi 5 laptops para el centro de costos CC-450 con envio a us-east",
+    "expected_calls": [
+      {
+        "it_support.order_hardware": {
+          "item": ["laptop"],
+          "quantity": [5],
+          "cost_center": ["CC-450"],
+          "shipping_region": ["us-east"]
+        }
+      }
+    ]
+  },
+  {
+    "id": "complex_004",
+    "category": "complex",
+    "user_query": "Actualiza el ticket inc-2210 a en progreso, asignaselo a maria.gomez y etiquetalo como network y access",
+    "expected_calls": [
+      {
+        "it_support.update_ticket": {
+          "ticket_id": ["INC-2210"],
+          "status": ["in_progress"],
+          "assignee": ["maria.gomez"],
+          "tags": [["network", "access"]]
+        }
+      }
+    ]
+  },
+  {
+    "id": "complex_005",
+    "category": "complex",
+    "user_query": "Corre un diagnostico de la vpn revisando latencia, dns y autenticacion en us-east",
+    "expected_calls": [
+      {
+        "it_support.run_diagnostic": {
+          "service": ["vpn"],
+          "checks": [["latency", "dns", "auth"]],
+          "region": ["us-east", ""]
+        }
+      }
+    ]
+  },
+  {
+    "id": "parallel_007",
+    "category": "parallel",
+    "user_query": "Crea el usuario para Ana Ruiz (ana.ruiz) en ventas y dale acceso de reader a jira con justificacion de onboarding",
+    "expected_calls": [
+      {
+        "it_support.create_user": {
+          "full_name": ["Ana Ruiz"],
+          "username": ["ana.ruiz"],
+          "department": ["sales"]
+        }
+      },
+      {
+        "it_support.provision_access": {
+          "username": ["ana.ruiz"],
+          "system": ["jira"],
+          "roles": [["reader"]],
+          "justification": ["<freeform>"]
+        }
+      }
+    ]
+  },
+  {
+    "id": "parallel_008",
+    "category": "parallel",
+    "user_query": "Corre un diagnostico de red con packet_loss y latency, y abri un incidente alta para network en produccion",
+    "expected_calls": [
+      {
+        "it_support.run_diagnostic": {
+          "service": ["network"],
+          "checks": [["packet_loss", "latency"]]
+        }
+      },
+      {
+        "it_support.create_incident": {
+          "service": ["network"],
+          "severity": ["high"],
+          "description": ["<freeform>"],
+          "environment": ["production", ""]
+        }
+      }
+    ]
+  },
+  {
+    "id": "parallel_009",
+    "category": "parallel",
+    "user_query": "Actualiza inc-3001 a resuelto con un comentario de cierre y escalalo al equipo de red con prioridad media",
+    "expected_calls": [
+      {
+        "it_support.update_ticket": {
+          "ticket_id": ["INC-3001"],
+          "status": ["resolved"],
+          "comment": ["<freeform>"]
+        }
+      },
+      {
+        "it_support.escalate_ticket": {
+          "ticket_id": ["INC-3001"],
+          "assignment_group": ["network_ops"],
+          "priority": ["p3"]
+        }
+      }
+    ]
+  },
+  {
+    "id": "parallel_010",
+    "category": "parallel",
+    "user_query": "Pedi 2 monitores para CC-100 con envio a us-west y tambien 1 dock para CC-100 a us-west",
+    "expected_calls": [
+      {
+        "it_support.order_hardware": {
+          "item": ["monitor"],
+          "quantity": [2],
+          "cost_center": ["CC-100"],
+          "shipping_region": ["us-west"]
+        }
+      },
+      {
+        "it_support.order_hardware": {
+          "item": ["dock"],
+          "quantity": [1],
+          "cost_center": ["CC-100"],
+          "shipping_region": ["us-west"]
+        }
+      }
+    ]
+  },
+  {
+    "id": "relevance_005",
+    "category": "relevance",
+    "user_query": "Estaria bueno que alguien le de una mano a la nueva, recien entra, se llama Lucia Mora (lucia.mora) y va al equipo de hr",
+    "expected_calls": [
+      {
+        "it_support.create_user": {
+          "full_name": ["Lucia Mora"],
+          "username": ["lucia.mora"],
+          "department": ["hr"]
+        }
+      }
+    ]
+  },
+  {
+    "id": "irrelevance_004",
+    "category": "irrelevance",
+    "user_query": "Que conviene mas para programar, un monitor curvo o uno plano?",
+    "expected_calls": []
+  },
+  {
+    "id": "irrelevance_005",
+    "category": "irrelevance",
+    "user_query": "Me explicas que hace en general un rol de auditor en una empresa?",
+    "expected_calls": []
+  }
+]
